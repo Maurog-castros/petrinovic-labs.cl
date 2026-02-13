@@ -1,11 +1,48 @@
 "use client";
 
 import { useState } from "react";
+import { useCart } from "@/lib/cart-context";
 import { RutInput } from "@/components/checkout/RutInput";
 import { ShieldCheck, Truck } from "lucide-react";
 
 export default function CheckoutPage() {
     const [isRutValid, setIsRutValid] = useState(false);
+    const [loading, setLoading] = useState(false);
+    const { items, total } = useCart();
+
+    const handlePayment = async () => {
+        if (!isRutValid) return;
+        setLoading(true);
+
+        try {
+            const response = await fetch("/api/checkout", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    items: items.map((item) => ({
+                        id: item.id,
+                        quantity: item.quantity,
+                    })),
+                }),
+            });
+
+            const data = await response.json();
+
+            if (data.init_point) {
+                window.location.href = data.init_point;
+            } else {
+                console.error("No init_point returned");
+                alert("Error al iniciar el pago. Por favor, intenta nuevamente.");
+            }
+        } catch (error) {
+            console.error("Payment error:", error);
+            alert("Hubo un error al procesar tu solicitud.");
+        } finally {
+            setLoading(false);
+        }
+    };
 
     return (
         <main className="container mx-auto px-4 py-12 max-w-3xl">
@@ -67,7 +104,7 @@ export default function CheckoutPage() {
                         <div className="space-y-2 text-sm mb-4">
                             <div className="flex justify-between">
                                 <span>Subtotal</span>
-                                <span>$0</span>
+                                <span>${total.toLocaleString("es-CL")}</span>
                             </div>
                             <div className="flex justify-between">
                                 <span>Envío</span>
@@ -75,16 +112,17 @@ export default function CheckoutPage() {
                             </div>
                             <div className="flex justify-between font-bold text-lg pt-2 border-t border-gray-200 dark:border-zinc-700">
                                 <span>Total</span>
-                                <span>$0</span>
+                                <span>${total.toLocaleString("es-CL")}</span>
                             </div>
                             <p className="text-xs text-gray-500 text-right">IVA incluido (19%)</p>
                         </div>
 
                         <button
-                            disabled={!isRutValid}
-                            className="w-full bg-black text-white dark:bg-white dark:text-black py-3 rounded-lg font-bold disabled:opacity-50 disabled:cursor-not-allowed transition-opacity"
+                            onClick={handlePayment}
+                            disabled={!isRutValid || loading || items.length === 0}
+                            className="w-full bg-black text-white dark:bg-white dark:text-black py-3 rounded-lg font-bold disabled:opacity-50 disabled:cursor-not-allowed transition-opacity flex justify-center"
                         >
-                            Pagar Ahora
+                            {loading ? "Procesando..." : "Pagar Ahora"}
                         </button>
 
                         <div className="mt-4 flex items-center justify-center gap-2 text-xs text-green-600 dark:text-green-400 bg-green-50 dark:bg-green-900/10 py-2 rounded">

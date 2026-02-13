@@ -1,1 +1,1 @@
-{"/_not-found":"/_not-found","/checkout/page":"/checkout","/page":"/","/products/page":"/products","/products/[slug]/page":"/products/[slug]"}
+{"/_not-found":"/_not-found","/api/checkout/route":"/api/checkout","/checkout/page":"/checkout","/page":"/","/api/webhooks/dte/route":"/api/webhooks/dte","/privacy/page":"/privacy","/products/page":"/products","/terms/page":"/terms","/products/[slug]/page":"/products/[slug]"}

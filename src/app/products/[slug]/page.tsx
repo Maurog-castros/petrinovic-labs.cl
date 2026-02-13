@@ -1,4 +1,5 @@
 import { products } from "@/lib/mock-data";
+import { AddToCartButton } from "@/components/product/AddToCartButton";
 import { NutritionalTable } from "@/components/product/NutritionalTable";
 import { WarningLabel } from "@/components/product/WarningLabel";
 import { Check, ShieldCheck, Truck } from "lucide-react";
@@ -46,6 +47,7 @@ export default function ProductPage({ params }: { params: { slug: string } }) {
                         </span>
                     </div>
 
+
                     <div className="mb-8 p-4 bg-blue-50 dark:bg-blue-900/10 rounded-lg border border-blue-100 dark:border-blue-900/30">
                         <h3 className="font-semibold mb-2 flex items-center gap-2">
                             <ShieldCheck className="w-5 h-5 text-blue-600" />
@@ -61,9 +63,7 @@ export default function ProductPage({ params }: { params: { slug: string } }) {
                         </ul>
                     </div>
 
-                    <button className="w-full bg-black text-white dark:bg-white dark:text-black py-4 rounded-full font-bold text-lg hover:opacity-90 transition-opacity mb-4">
-                        Agregar al Carrito
-                    </button>
+                    <AddToCartButton product={product} />
 
                     <div className="flex items-center gap-2 text-sm text-gray-500 justify-center">
                         <Truck className="w-4 h-4" /> Envío calculado al finalizar compra
