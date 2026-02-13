@@ -13,6 +13,8 @@ export const metadata: Metadata = {
     keywords: ["biohacking", "suplementos", "chile", "home office", "foco", "sueño"],
 };
 
+import { CartProvider } from "@/lib/cart-context";
+
 export default function RootLayout({
     children,
 }: Readonly<{
@@ -21,9 +23,11 @@ export default function RootLayout({
     return (
         <html lang="es">
             <body className={clsx(inter.className, "antialiased min-h-screen flex flex-col")}>
-                <Header />
-                <div className="flex-1">{children}</div>
-                <Footer />
+                <CartProvider>
+                    <Header />
+                    <div className="flex-1">{children}</div>
+                    <Footer />
+                </CartProvider>
             </body>
         </html>
     );
