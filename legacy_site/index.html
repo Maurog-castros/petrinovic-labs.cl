@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth antialiased">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Petrinovic Health Labs | Suplementación de alto rendimiento para el trabajador cognitivo moderno." />
+  <meta name="theme-color" content="#050505" />
+  <link rel="icon" type="image/x-icon" href="Imagenes/logos/favicon_io/favicon.ico" />
+  <title>PHL | Petrinovic Health Labs</title>
+
+  <!-- Tailwind CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    /**
+     * IMPORTANTE:
+     * Para que funcionen clases tipo "bg-brand-gold/50" con colores custom,
+     * definimos los colores como rgb(var(--x) / <alpha-value>).
+     */
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              bg: 'rgb(var(--brand-bg) / <alpha-value>)',
+              panel: 'rgb(var(--brand-panel) / <alpha-value>)',
+              gold: 'rgb(var(--brand-gold) / <alpha-value>)',
+            }
+          },
+          fontFamily: {
+            didot: ['"Bodoni Moda"', 'serif'],
+            geo: ['"Montserrat"', 'sans-serif'],
+          },
+          animation: {
+            'fade-up': 'fadeInUp 0.85s ease-out forwards',
+            'spin-slow': 'spin 60s linear infinite',
+          },
+          keyframes: {
+            fadeInUp: {
+              '0%': { opacity: '0', transform: 'translateY(18px)' },
+              '100%': { opacity: '1', transform: 'translateY(0)' },
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:opsz,wght@6..96,400;500;600;700&family=Montserrat:wght@200;300;400;500;600&display=swap" rel="stylesheet" />
+
+  <script src="https://unpkg.com/lucide@latest" defer></script>
+
+  <style>
+    :root{
+      /* rgb triples (sin comas) para opacidades Tailwind */
+      --brand-bg: 5 5 5;
+      --brand-panel: 15 15 15;
+      --brand-gold: 197 160 89;
+
+      --noise-url: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+      --footer-safe: 0px; /* se setea por JS */
+      --nav-safe: 96px;   /* aproximación inicial; JS puede ajustar si quieres */
+    }
+
+    body {
+      background-color: rgb(var(--brand-bg));
+      color: #e5e7eb;
+      overflow-x: hidden;
+      /* evita que el footer fijo tape contenido */
+      padding-bottom: calc(var(--footer-safe) + env(safe-area-inset-bottom, 0px));
+    }
+
+    ::selection { background-color: rgb(var(--brand-gold)); color: #000; }
+
+    .bg-noise {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 40;
+      opacity: 0.04;
+      background-image: var(--noise-url);
+    }
+
+    /* Ajuste avanzado para inputs de rango */
+    input[type=range] { -webkit-appearance: none; background: transparent; }
+    input[type=range]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      height: 16px; width: 16px; border-radius: 50%;
+      background: rgb(var(--brand-gold));
+      cursor: pointer;
+      margin-top: -6px;
+      transition: transform 0.2s;
+    }
+    input[type=range]::-webkit-slider-thumb:hover { transform: scale(1.2); }
+    input[type=range]::-webkit-slider-runnable-track { width: 100%; height: 2px; cursor: pointer; background: #333; }
+
+    .glass-panel {
+      background: rgba(15, 15, 15, 0.6);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    /* Transición suave hero → sección */
+    .section-transition {
+      height: 140px;
+      background: linear-gradient(180deg, transparent 0%, rgba(5, 5, 5, 0.45) 25%, rgb(15, 15, 15) 100%);
+      pointer-events: none;
+    }
+  </style>
+</head>
+
+<body class="font-geo relative">
+
+  <div class="bg-noise" aria-hidden="true"></div>
+
+  <!-- NAVBAR (fijo, con comportamiento correcto) -->
+  <nav id="navbar" class="fixed top-0 left-0 right-0 z-50 transition-all duration-300">
+    <div id="navbarInner" class="mx-auto max-w-[1400px] px-6 md:px-12">
+      <div class="flex items-center justify-between py-7 md:py-8 transition-all duration-300">
+
+        <!-- Logo -->
+        <a href="#top" class="group flex items-center gap-3" aria-label="PHL Inicio">
+          <img
+            src="Imagenes/logos/PHL-LOGO-corches-sinfondo.png"
+            alt="Petrinovic Health Labs"
+            class="h-10 md:h-12 w-auto object-contain opacity-90 group-hover:opacity-100 transition-opacity duration-300"
+            loading="eager"
+            decoding="async"
+          />
+        </a>
+
+        <!-- Menú Desktop -->
+        <div class="hidden md:flex items-center gap-12 text-[10px] font-medium tracking-[0.25em] uppercase text-gray-300/80">
+          <a href="#section-1" class="hover:text-white transition-colors duration-300 relative group">
+            Colección
+            <span class="absolute -bottom-2 left-0 w-0 h-[1px] bg-brand-gold/70 transition-all duration-300 group-hover:w-full"></span>
+          </a>
+          <a href="#section-2" class="hover:text-white transition-colors duration-300 relative group">
+            Ciencia
+            <span class="absolute -bottom-2 left-0 w-0 h-[1px] bg-brand-gold/70 transition-all duration-300 group-hover:w-full"></span>
+          </a>
+          <a href="#section-3" class="hover:text-white transition-colors duration-300 relative group flex items-center gap-2">
+            <i data-lucide="sparkles" class="w-3 h-3"></i>
+            Intelligence
+            <span class="absolute -bottom-2 left-0 w-0 h-[1px] bg-brand-gold/70 transition-all duration-300 group-hover:w-full"></span>
+          </a>
+        </div>
+
+        <!-- CTAs -->
+        <div class="flex items-center gap-3 md:gap-4">
+          <a
+            href="/Survey.html"
+            class="hidden sm:inline-flex text-[10px] font-bold tracking-[0.2em] uppercase text-brand-gold border border-brand-gold/50 px-6 md:px-8 py-3 hover:bg-brand-gold hover:text-black transition-all duration-300"
+          >
+            Survey
+          </a>
+
+          <a
+            href="#shop"
+            class="inline-flex text-[10px] font-bold tracking-[0.2em] uppercase text-brand-gold border border-brand-gold/50 px-6 md:px-8 py-3 hover:bg-brand-gold hover:text-black transition-all duration-300"
+          >
+            Tienda
+          </a>
+
+          <!-- Botón móvil (opcional) -->
+          <button
+            id="menuBtn"
+            class="md:hidden inline-flex items-center justify-center w-10 h-10 rounded-lg border border-white/10 bg-black/20 backdrop-blur hover:border-white/20 transition"
+            aria-label="Abrir menú"
+            aria-expanded="false"
+            type="button"
+          >
+            <i data-lucide="menu" class="w-5 h-5 text-gray-200"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- Menú móvil -->
+      <div id="mobileMenu" class="md:hidden hidden pb-4">
+        <div class="rounded-2xl border border-white/10 bg-black/60 backdrop-blur-md p-4">
+          <div class="flex flex-col gap-3 text-[11px] font-medium tracking-[0.18em] uppercase text-gray-200">
+            <a href="#section-1" class="py-2 px-2 rounded-lg hover:bg-white/5 transition">Colección</a>
+            <a href="#section-2" class="py-2 px-2 rounded-lg hover:bg-white/5 transition">Ciencia</a>
+            <a href="#section-3" class="py-2 px-2 rounded-lg hover:bg-white/5 transition flex items-center gap-2">
+              <i data-lucide="sparkles" class="w-4 h-4"></i> Intelligence
+            </a>
+            <a href="#survey" class="py-2 px-2 rounded-lg hover:bg-white/5 transition">Survey</a>
+            <a href="#shop" class="py-2 px-2 rounded-lg hover:bg-white/5 transition">Tienda</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <main id="top">
+    <!-- HERO -->
+    <header class="relative min-h-screen flex items-center justify-center text-center px-4 overflow-hidden">
+      <!-- Video background -->
+      <div class="absolute inset-0 overflow-hidden">
+        <video
+          class="w-full h-full object-cover"
+          autoplay
+          muted
+          loop
+          playsinline
+          preload="auto"
+          poster="Imagenes/logos/PHL-LOGO-corches-sinfondo.png"
+          style="opacity: 0.86; filter: brightness(1.10) contrast(1.15) saturate(1.06);"
+        >
+          <source src="Imagenes/logos/Logo_Animado_Generado_Por_IA.mp4" type="video/mp4" />
+        </video>
+
+        <!-- Overlay controlado (no mata el video) -->
+        <div class="absolute inset-0 bg-gradient-to-b from-black/35 via-black/15 to-brand-bg/85"></div>
+        <div class="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(197,160,89,0.10),transparent_55%)]"></div>
+      </div>
+
+      <!-- Contenido (opcional; si no quieres texto, puedes eliminar este bloque) -->
+      <div class="relative z-10 pt-28 md:pt-32">
+        <!-- Ejemplo mínimo, discreto -->
+        <div class="mx-auto max-w-3xl opacity-0 animate-fade-up" style="animation-delay: 120ms;">
+          <h1 class="font-didot text-3xl md:text-5xl tracking-[0.12em] text-white/90">
+            PETRINOVIC HEALTH LABS
+          </h1>
+          <p class="mt-4 text-xs md:text-sm tracking-[0.24em] uppercase text-gray-200/70">
+            Alto rendimiento. Diseño. Rigurosidad.
+          </p>
+
+          <div class="mt-8 flex flex-col sm:flex-row items-center justify-center gap-3">
+            <a href="#section-1" class="w-full sm:w-auto px-8 py-3 text-[10px] font-bold tracking-[0.2em] uppercase border border-white/15 bg-black/30 backdrop-blur hover:bg-black/45 transition rounded-lg">
+              Explorar
+            </a>
+            <a href="#shop" class="w-full sm:w-auto px-8 py-3 text-[10px] font-bold tracking-[0.2em] uppercase border border-brand-gold/50 text-brand-gold hover:bg-brand-gold hover:text-black transition rounded-lg">
+              Ver tienda
+            </a>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <div class="section-transition" aria-hidden="true"></div>
+
+    <!-- Anchor para botones -->
+    <div id="survey" class="relative -top-24" aria-hidden="true"></div>
+
+    <section id="section-1" class="pb-32 pt-24 md:pt-32 bg-brand-panel relative overflow-hidden -mt-32">
+      <div class="absolute top-0 right-0 w-[500px] h-[500px] bg-blue-900/5 blur-[120px] rounded-full pointer-events-none"></div>
+
+      <div class="relative max-w-[1400px] mx-auto px-6 z-10">
+        <iframe
+          src="index-section-1.html"
+          class="w-full h-[800px] border-0 rounded-xl overflow-hidden bg-black/20"
+          loading="lazy"
+          referrerpolicy="no-referrer"
+          title="Sección 1"
+        ></iframe>
+      </div>
+    </section>
+
+    <section id="section-2" class="py-28 bg-[#080808] border-y border-white/5 relative">
+      <div class="max-w-[1400px] mx-auto px-6 relative z-10">
+        <iframe
+          src="index-section-2.html"
+          class="w-full h-[700px] border-0 rounded-xl overflow-hidden bg-black/20"
+          loading="lazy"
+          referrerpolicy="no-referrer"
+          title="Sección 2"
+        ></iframe>
+      </div>
+    </section>
+
+    <!-- Anchor Tienda -->
+    <div id="shop" class="relative -top-24" aria-hidden="true"></div>
+
+    <section id="section-3" class="py-32 border-t border-white/5 bg-brand-bg">
+      <div class="max-w-[1400px] mx-auto px-6">
+        <iframe
+          src="index-section-3.html"
+          class="w-full h-[700px] border-0 rounded-xl overflow-hidden bg-black/20"
+          loading="lazy"
+          referrerpolicy="no-referrer"
+          title="Sección 3"
+        ></iframe>
+      </div>
+    </section>
+  </main>
+
+  <!-- FOOTER fijo (sin tapar contenido) -->
+  <footer id="footer" class="fixed bottom-0 left-0 right-0 z-40 bg-black/90 backdrop-blur-md border-t border-white/10">
+    <div class="max-w-[1400px] mx-auto px-6 py-4 md:py-6 flex flex-col md:flex-row justify-between items-center gap-4">
+      <div class="flex flex-wrap justify-center md:justify-start gap-8 text-[10px] uppercase tracking-[0.2em] text-gray-400 font-bold">
+        <a href="#" class="hover:text-brand-gold transition-colors">Instagram</a>
+        <a href="#" class="hover:text-brand-gold transition-colors">LinkedIn</a>
+        <a href="#" class="hover:text-brand-gold transition-colors">Contacto</a>
+      </div>
+      <p class="text-[9px] text-gray-500 uppercase tracking-widest font-medium text-center md:text-right">
+        © 2026 Petrinovic Health Labs. Santiago, Chile.
+      </p>
+    </div>
+  </footer>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      // Lucide
+      if (window.lucide && typeof window.lucide.createIcons === 'function') {
+        window.lucide.createIcons();
+      }
+
+      // Navbar scroll behavior (background + padding)
+      const navbar = document.getElementById('navbar');
+      const navbarInner = document.getElementById('navbarInner');
+      const footer = document.getElementById('footer');
+
+      const applyFooterSafePadding = () => {
+        if (!footer) return;
+        const h = footer.getBoundingClientRect().height;
+        document.documentElement.style.setProperty('--footer-safe', `${Math.ceil(h)}px`);
+      };
+      applyFooterSafePadding();
+      window.addEventListener('resize', applyFooterSafePadding);
+
+      const onScroll = () => {
+        const isScrolled = window.scrollY > 20;
+
+        navbar.classList.toggle('bg-black/65', isScrolled);
+        navbar.classList.toggle('backdrop-blur-md', isScrolled);
+        navbar.classList.toggle('border-b', isScrolled);
+        navbar.classList.toggle('border-white/5', isScrolled);
+
+        // Reduce padding visual del bloque interno
+        if (navbarInner) {
+          const row = navbarInner.firstElementChild; // contenedor flex
+          if (row) {
+            row.classList.toggle('py-4', isScrolled);
+            row.classList.toggle('md:py-5', isScrolled);
+            row.classList.toggle('py-7', !isScrolled);
+            row.classList.toggle('md:py-8', !isScrolled);
+          }
+        }
+      };
+      window.addEventListener('scroll', onScroll, { passive: true });
+      onScroll();
+
+      // Menú móvil
+      const btn = document.getElementById('menuBtn');
+      const menu = document.getElementById('mobileMenu');
+
+      if (btn && menu) {
+        btn.addEventListener('click', () => {
+          const isOpen = !menu.classList.contains('hidden');
+          menu.classList.toggle('hidden', isOpen);
+          btn.setAttribute('aria-expanded', String(!isOpen));
+          // refresca icons si cambió DOM
+          if (window.lucide && typeof window.lucide.createIcons === 'function') {
+            window.lucide.createIcons();
+          }
+        });
+
+        // Cierra menú al clickear link
+        menu.querySelectorAll('a[href^="#"]').forEach(a => {
+          a.addEventListener('click', () => {
+            menu.classList.add('hidden');
+            btn.setAttribute('aria-expanded', 'false');
+          });
+        });
+      }
+
+      /**
+       * BLOQUE UI: tu HTML principal NO tiene estos IDs (están en iframes),
+       * y antes esto generaba errores por null.addEventListener().
+       * Lo dejamos con guardas para que no rompa el resto del JS.
+       */
+      const ui = {
+        energyInput: document.getElementById('energy-input'),
+        energyValue: document.getElementById('energy-value'),
+        goalInput: document.getElementById('goal-input'),
+        generateBtn: document.getElementById('generate-btn'),
+        initialState: document.getElementById('initial-state'),
+        loadingState: document.getElementById('loading-state'),
+        resultState: document.getElementById('result-state'),
+        protocolList: document.getElementById('protocol-list')
+      };
+
+      if (ui.energyInput && ui.energyValue) {
+        ui.energyInput.addEventListener('input', (e) => {
+          ui.energyValue.innerHTML = `${e.target.value}<span class="text-gray-600 text-xs">/10</span>`;
+        });
+      }
+
+      if (ui.goalInput && ui.generateBtn) {
+        ui.goalInput.addEventListener('input', (e) => {
+          ui.generateBtn.disabled = e.target.value.trim().length === 0;
+        });
+      }
+
+      if (ui.generateBtn && ui.initialState && ui.loadingState && ui.resultState && ui.protocolList) {
+        ui.generateBtn.addEventListener('click', async () => {
+          ui.initialState.classList.add('hidden');
+          ui.resultState.classList.add('hidden');
+          ui.loadingState.classList.remove('hidden');
+          ui.generateBtn.disabled = true;
+
+          setTimeout(() => {
+            renderProtocol([
+              { time: "T+00:00", title: "Protocolo de Entrada", desc: "Ingesta de 2 cápsulas de NeuroPrime. Bloqueo de notificaciones." },
+              { time: "T+01:30", title: "Respiración NSDR", desc: "Non-Sleep Deep Rest de 10 minutos para resetear dopamina." },
+              { time: "T+03:00", title: "Exposición Lumínica", desc: "Luz natural o azul para mantener ritmo circadiano activo." },
+              { time: "T+04:00", title: "Descompresión", desc: "Cierre de ciclo de trabajo. Evaluar estado cognitivo." }
+            ]);
+          }, 2500);
+        });
+
+        function renderProtocol(steps) {
+          ui.protocolList.innerHTML = '';
+          steps.forEach((step, index) => {
+            const isLast = index === steps.length - 1;
+            ui.protocolList.innerHTML += `
+              <div class="relative pl-6 pb-8 border-l ${isLast ? 'border-transparent' : 'border-white/10'} group">
+                <div class="absolute -left-[5px] top-1 w-[9px] h-[9px] rounded-full bg-brand-bg border border-brand-gold group-hover:bg-brand-gold transition-colors duration-300"></div>
+                <span class="text-[9px] font-bold text-gray-400 tracking-wider block mb-1">${step.time}</span>
+                <h4 class="font-didot text-lg text-white mb-1 group-hover:text-brand-gold transition-colors">${step.title}</h4>
+                <p class="text-xs text-gray-400 leading-relaxed max-w-xs">${step.desc}</p>
+              </div>
+            `;
+          });
+
+          ui.loadingState.classList.add('hidden');
+          ui.resultState.classList.remove('hidden');
+          ui.generateBtn.disabled = false;
+
+          if (window.lucide && typeof window.lucide.createIcons === 'function') {
+            window.lucide.createIcons();
+          }
+        }
+      }
+    });
+  </script>
+</body>
+</html>
