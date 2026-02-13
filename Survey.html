@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth antialiased">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="PHL | Sección Ciencia" />
+  <meta name="theme-color" content="#050505" />
+
+  <title>PHL | Survey</title>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              bg: '#050505',
+              panel: '#0F0F0F',
+              gold: '#C5A059',
+            }
+          },
+          fontFamily: {
+            didot: ['"Bodoni Moda"', 'serif'],
+            geo: ['"Montserrat"', 'sans-serif'],
+          },
+          animation: {
+            'fade-up': 'fadeInUp 0.85s ease-out forwards',
+            'spin-slow': 'spin 60s linear infinite',
+          },
+          keyframes: {
+            fadeInUp: {
+              '0%': { opacity: '0', transform: 'translateY(18px)' },
+              '100%': { opacity: '1', transform: 'translateY(0)' },
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    :root {
+      --gold-primary: #C5A059;
+    }
+    body { background-color: #050505; color: #e5e7eb; overflow-x: hidden; }
+    .glass-panel { background: rgba(15, 15, 15, 0.6); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.08); }
+  </style>
+</head>
+<body class="font-geo bg-brand-bg">
+  <main>
+    <section id="survey" class="min-h-screen pb-32 pt-24 md:pt-32 bg-brand-panel relative overflow-hidden">
+      <div class="absolute top-0 right-0 w-[520px] h-[520px] bg-blue-900/10 blur-[140px] rounded-full pointer-events-none"></div>
+
+      <div class="max-w-2xl mx-auto px-6 relative z-10">
+        <header class="mb-10 text-center">
+          <p class="text-[10px] tracking-[0.35em] text-brand-gold uppercase mb-3">Petrinovic Intelligence</p>
+          <h1 class="font-didot text-3xl md:text-4xl text-white mb-3">Conozcámonos un poco</h1>
+          <p class="text-xs md:text-sm text-gray-400 max-w-xl mx-auto">
+            Responde algunas preguntas rápidas sobre tu contexto. 
+            Te las mostraremos de a una, sin presión.
+          </p>
+        </header>
+
+        <div class="glass-panel rounded-3xl px-6 py-7 md:px-8 md:py-8 shadow-2xl border border-white/5">
+          <!-- barra de progreso -->
+          <div class="flex items-center justify-between mb-6 gap-4">
+            <div class="flex-1 h-[3px] bg-black/60 rounded-full overflow-hidden">
+              <div id="survey-progress" class="h-full bg-brand-gold/80 transition-all duration-500" style="width: 0%"></div>
+            </div>
+            <span id="survey-step-label" class="text-[10px] tracking-[0.28em] uppercase text-gray-500">
+              Pregunta 1 / 15
+            </span>
+          </div>
+
+          <!-- contenido de la pregunta -->
+          <div id="survey-question" class="space-y-4 md:space-y-5">
+            <p id="survey-question-tag" class="text-[11px] tracking-[0.3em] uppercase text-brand-gold/80">
+              Pregunta 1
+            </p>
+            <h2 id="survey-question-title" class="font-didot text-2xl md:text-3xl text-white">
+              <!-- título -->
+            </h2>
+            <p id="survey-question-subtitle" class="text-xs md:text-sm text-gray-400 max-w-md">
+              <!-- subtítulo -->
+            </p>
+
+            <div id="survey-options" class="mt-4 space-y-3" role="radiogroup" aria-label="Opciones de respuesta">
+              <!-- opciones -->
+            </div>
+          </div>
+
+          <!-- navegación -->
+          <div class="mt-8 flex items-center justify-between gap-4">
+            <button
+              id="survey-prev"
+              class="text-[10px] tracking-[0.25em] uppercase px-4 py-2 border border-white/10 text-gray-400 rounded-full hover:border-white/30 hover:text-white transition disabled:opacity-30 disabled:cursor-not-allowed"
+            >
+              Atrás
+            </button>
+            <button
+              id="survey-next"
+              class="group inline-flex items-center gap-2 text-[10px] tracking-[0.3em] uppercase px-6 py-3 rounded-full bg-white text-black font-semibold hover:bg-brand-gold transition-all disabled:opacity-30 disabled:cursor-not-allowed"
+            >
+              <span id="survey-next-label">Siguiente</span>
+              <span class="inline-flex items-center justify-center w-4 h-4 rounded-full border border-black/40 group-hover:translate-x-0.5 transition-transform">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-2.5 h-2.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M9 18l6-6-6-6" />
+                </svg>
+              </span>
+            </button>
+          </div>
+        </div>
+
+        <!-- estado final -->
+        <div id="survey-finish" class="hidden mt-10 text-center space-y-4">
+          <h2 class="font-didot text-2xl md:text-3xl text-white">
+            Gracias por compartir tu contexto
+          </h2>
+          <p class="text-xs md:text-sm text-gray-400 max-w-lg mx-auto">
+            Ya tenemos una imagen más clara de tu perfil. 
+            Usaremos estas respuestas para ajustar tus futuras recomendaciones y protocolos.
+          </p>
+          <div
+            id="survey-result"
+            class="mt-6 max-w-xl mx-auto text-left glass-panel rounded-3xl px-6 py-6 border border-white/5"
+          ></div>
+          <a
+            id="survey-cta"
+            class="inline-flex mt-5 items-center justify-center px-6 py-3 rounded-full bg-white text-black font-semibold hover:bg-brand-gold transition"
+            href="#"
+            aria-label="Ir al kit recomendado"
+          >
+            Ver kit recomendado
+          </a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script>
+  const questions = [
+    {
+      id: 'edad',
+      tag: '1. Edad',
+      title: '¿En qué rango etario te encuentras?',
+      subtitle: '',
+      options: ['18–24', '25–34', '35–44', '45–54', '55+'],
+    },
+    {
+      id: 'sexo',
+      tag: '2. Sexo biológico',
+      title: '¿Cómo te identificas?',
+      subtitle: 'Relevante para recomendaciones generales de micronutrientes, sin enfoque médico.',
+      options: ['Mujer', 'Hombre', 'Prefiero no decir'],
+    },
+    {
+      id: 'peso',
+      tag: '3. Peso corporal',
+      title: '¿Cuál es tu peso aproximado?',
+      subtitle: '',
+      options: ['< 60 kg', '60–75 kg', '76–90 kg', '90 kg+'],
+    },
+    {
+      id: 'estatura',
+      tag: '4. Estatura',
+      title: '¿Cuál es tu estatura aproximada?',
+      subtitle: 'Esto nos permite estimar tu IMC sin usarlo como diagnóstico.',
+      options: ['< 1,60 m', '1,60–1,70 m', '1,71–1,80 m', '1,80 m+'],
+    },
+    {
+      id: 'estructura',
+      tag: '5. Estructura corporal',
+      title: '¿Cómo describirías tu estructura corporal predominante?',
+      subtitle: '',
+      options: [
+        'Endomorfo (tendencia a acumular grasa)',
+        'Mesomorfo (estructura atlética)',
+        'Ectomorfo (contextura delgada)',
+        'No estoy seguro/a',
+      ],
+    },
+    {
+      id: 'actividad',
+      tag: '6. Actividad física',
+      title: '¿Cuántas veces entrenas por semana?',
+      subtitle: '',
+      options: ['0', '1–2', '3–4', '5 o más'],
+    },
+    {
+      id: 'entrenamiento',
+      tag: '7. Tipo de entrenamiento',
+      title: '¿Qué tipo de actividad realizas principalmente?',
+      subtitle: '',
+      options: ['Fuerza / pesas', 'Cardio', 'Mixto', 'Yoga / movilidad', 'No entreno'],
+    },
+    {
+      id: 'pantalla',
+      tag: '8. Horas frente a pantalla',
+      title: '¿Cuántas horas al día trabajas frente al computador?',
+      subtitle: '',
+      options: ['< 4', '4–6', '6–8', '8+'],
+    },
+    {
+      id: 'desafio',
+      tag: '9. Desafío actual',
+      title: '¿Qué te gustaría optimizar en tu rutina diaria?',
+      subtitle: '',
+      options: ['Energía sostenida', 'Enfoque mental', 'Manejo del estrés', 'Sueño', 'Composición corporal', 'Recuperación física'],
+    },
+    {
+      id: 'sueno',
+      tag: '10. Sueño',
+      title: '¿Cómo evalúas tu sueño?',
+      subtitle: '',
+      options: ['Muy reparador', 'Aceptable', 'Ligero / interrumpido', 'Me cuesta dormir'],
+    },
+    {
+      id: 'cafeina',
+      tag: '11. Cafeína',
+      title: '¿Cuánta cafeína consumes al día?',
+      subtitle: '',
+      options: ['Nada', '1 taza', '2–3 tazas', '4+ tazas'],
+    },
+    {
+      id: 'alimentacion',
+      tag: '12. Alimentación',
+      title: '¿Cómo describirías tu alimentación predominante?',
+      subtitle: '',
+      options: ['Balanceada', 'Alta en carbohidratos', 'Alta en proteínas', 'Vegetariana / vegana', 'Irregular'],
+    },
+    {
+      id: 'estres',
+      tag: '13. Estrés laboral',
+      title: '¿Cómo calificas tu nivel de estrés actual?',
+      subtitle: '',
+      options: ['Bajo', 'Moderado', 'Alto', 'Muy alto'],
+    },
+    {
+      id: 'suplementos',
+      tag: '14. Suplementos',
+      title: '¿Has usado suplementos antes?',
+      subtitle: '',
+      options: [
+        'No',
+        'Sí, básicos (vitaminas, omega 3)',
+        'Sí, deportivos',
+        'Sí, varios tipos',
+      ],
+    },
+    {
+      id: 'objetivo',
+      tag: '15. Objetivo prioritario',
+      title: 'Si tuvieras que elegir un solo objetivo para los próximos 90 días, sería:',
+      subtitle: '',
+      options: [
+        'Mayor claridad mental',
+        'Mejor energía diaria',
+        'Mejor descanso nocturno',
+        'Mejor rendimiento físico',
+        'Mejor equilibrio general',
+      ],
+    },
+  ];
+
+  const state = {
+    current: 0,
+    answers: {},
+  };
+
+  const STORAGE_KEY = 'phl_survey_v1';
+
+  const progressEl = document.getElementById('survey-progress');
+  const stepLabelEl = document.getElementById('survey-step-label');
+  const tagEl = document.getElementById('survey-question-tag');
+  const titleEl = document.getElementById('survey-question-title');
+  const subtitleEl = document.getElementById('survey-question-subtitle');
+  const optionsEl = document.getElementById('survey-options');
+  const prevBtn = document.getElementById('survey-prev');
+  const nextBtn = document.getElementById('survey-next');
+  const nextLabelEl = document.getElementById('survey-next-label');
+  const finishEl = document.getElementById('survey-finish');
+
+  const resultEl = document.getElementById('survey-result');
+  const ctaEl = document.getElementById('survey-cta');
+
+  function safePushEvent(name, payload = {}) {
+    // Conecta GA4 / GTM si existe
+    try {
+      window.dataLayer?.push({ event: name, ...payload });
+    } catch (_) {}
+  }
+
+  function saveState() {
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify({
+        current: state.current,
+        answers: state.answers,
+      }));
+    } catch (_) {}
+  }
+
+  function loadState() {
+    try {
+      const raw = localStorage.getItem(STORAGE_KEY);
+      if (!raw) return;
+      const parsed = JSON.parse(raw);
+      if (parsed && typeof parsed === 'object') {
+        if (Number.isInteger(parsed.current)) state.current = Math.max(0, Math.min(parsed.current, questions.length - 1));
+        if (parsed.answers && typeof parsed.answers === 'object') state.answers = parsed.answers;
+      }
+    } catch (_) {}
+  }
+
+  function clearState() {
+    try { localStorage.removeItem(STORAGE_KEY); } catch (_) {}
+  }
+
+  function updateNextDisabled() {
+    const q = questions[state.current];
+    nextBtn.disabled = !state.answers[q.id];
+  }
+
+  function getSelectedIndex(q) {
+    const val = state.answers[q.id];
+    return q.options.findIndex(o => o === val);
+  }
+
+  function renderQuestion() {
+    const q = questions[state.current];
+    const total = questions.length;
+
+    const progress = ((state.current + 1) / total) * 100;
+    progressEl.style.width = progress + '%';
+    stepLabelEl.textContent = `Pregunta ${state.current + 1} / ${total}`;
+
+    tagEl.textContent = q.tag;
+    titleEl.textContent = q.title;
+    subtitleEl.textContent = q.subtitle || '';
+
+    optionsEl.innerHTML = '';
+    optionsEl.setAttribute('aria-label', q.title);
+
+    q.options.forEach((opt, idx) => {
+      const isSelected = state.answers[q.id] === opt;
+
+      const option = document.createElement('button');
+      option.type = 'button';
+      option.className =
+        'w-full flex items-center justify-between px-4 py-3 md:px-5 md:py-3.5 rounded-xl border text-left text-xs md:text-sm transition-all ' +
+        (isSelected
+          ? 'border-brand-gold bg-brand-gold/10 text-white'
+          : 'border-white/10 bg-black/30 text-gray-300 hover:border-brand-gold/60 hover:bg-white/5');
+
+      // Accesibilidad tipo radio
+      option.setAttribute('role', 'radio');
+      option.setAttribute('aria-checked', isSelected ? 'true' : 'false');
+      option.tabIndex = isSelected ? 0 : -1;
+
+      option.dataset.value = opt;
+      option.innerHTML = `
+        <span>${opt}</span>
+        <span class="w-4 h-4 rounded-full border ${isSelected ? 'border-brand-gold bg-brand-gold/70' : 'border-white/15'}"></span>
+      `;
+
+      option.addEventListener('click', () => {
+        state.answers[q.id] = opt;
+        saveState();
+        safePushEvent('survey_answer', { question_id: q.id, value: opt, step: state.current + 1 });
+
+        renderQuestion();
+        updateNextDisabled();
+
+        // Auto-advance suave (opcional). Si no lo quieres, comenta estas 4 líneas.
+        setTimeout(() => {
+          if (state.current < questions.length - 1) {
+            state.current += 1;
+            saveState();
+            renderQuestion();
+          }
+        }, 220);
+      });
+
+      optionsEl.appendChild(option);
+    });
+
+    prevBtn.disabled = state.current === 0;
+    nextLabelEl.textContent = state.current === total - 1 ? 'Finalizar' : 'Siguiente';
+    updateNextDisabled();
+  }
+
+  // Teclado: flechas para moverte por opciones
+  optionsEl.addEventListener('keydown', (e) => {
+    const q = questions[state.current];
+    const selectedIdx = Math.max(0, getSelectedIndex(q));
+    const radios = Array.from(optionsEl.querySelectorAll('[role="radio"]'));
+
+    if (!radios.length) return;
+
+    if (e.key === 'ArrowDown' || e.key === 'ArrowRight') {
+      e.preventDefault();
+      const nextIdx = Math.min(radios.length - 1, selectedIdx + 1);
+      radios[nextIdx].focus();
+      radios[nextIdx].click();
+    }
+
+    if (e.key === 'ArrowUp' || e.key === 'ArrowLeft') {
+      e.preventDefault();
+      const prevIdx = Math.max(0, selectedIdx - 1);
+      radios[prevIdx].focus();
+      radios[prevIdx].click();
+    }
+  });
+
+  prevBtn.addEventListener('click', () => {
+    if (state.current === 0) return;
+    state.current -= 1;
+    saveState();
+    renderQuestion();
+  });
+
+  function computeRecommendation(answers) {
+    // Placeholder: ajusta a tus kits reales.
+    // Regla simple: prioridad por objetivo + sueño + cafeína + estrés.
+    const objetivo = answers.objetivo || '';
+    const sueno = answers.sueno || '';
+    const cafeina = answers.cafeina || '';
+    const estres = answers.estres || '';
+    const actividad = answers.actividad || '';
+
+    let kitId = 'balance';
+    let kitName = 'Kit Balance';
+    const reasons = [];
+
+    if (objetivo.includes('claridad') || (answers.desafio || '').includes('Enfoque')) {
+      kitId = 'focus';
+      kitName = 'Kit Focus';
+      reasons.push('Orientado a enfoque y productividad sostenida.');
+    }
+
+    if (objetivo.includes('descanso') || sueno.includes('Me cuesta') || (answers.desafio || '').includes('Sueño')) {
+      kitId = 'night';
+      kitName = 'Kit Night';
+      reasons.push('Pensado para apoyar tu rutina nocturna y recuperación.');
+    }
+
+    if (objetivo.includes('energía') || cafeina.includes('4+') || (answers.desafio || '').includes('Energía')) {
+      kitId = 'energy';
+      kitName = 'Kit Energy';
+      reasons.push('Enfocado en energía sostenida sin depender tanto de estimulantes.');
+    }
+
+    if (estres.includes('Alto') || estres.includes('Muy alto')) {
+      reasons.push('Tu nivel de estrés sugiere priorizar hábitos y soporte de rutina.');
+    }
+
+    if (actividad === '0') {
+      reasons.push('Recomendación compatible con rutina sedentaria (trabajo remoto).');
+    }
+
+    // CTA ejemplo (ajusta URLs reales)
+    const ctaUrl = `/kits/${kitId}.html`;
+
+    return { kitId, kitName, reasons: reasons.slice(0, 3), ctaUrl };
+  }
+
+  function finishSurvey() {
+    const card = document.querySelector('#survey .glass-panel');
+    card.classList.add('opacity-0', 'translate-y-2', 'pointer-events-none');
+
+    const rec = computeRecommendation(state.answers);
+    safePushEvent('survey_complete', { kit_id: rec.kitId, kit_name: rec.kitName });
+
+    setTimeout(() => {
+      card.classList.add('hidden');
+      finishEl.classList.remove('hidden');
+
+      if (resultEl) {
+        const reasonsHtml = rec.reasons.length
+          ? `<ul class="mt-3 space-y-2 text-xs text-gray-300">${rec.reasons.map(r => `<li>• ${r}</li>`).join('')}</ul>`
+          : '';
+
+        resultEl.innerHTML = `
+          <p class="text-[10px] tracking-[0.35em] uppercase text-brand-gold/80">Recomendación</p>
+          <h3 class="font-didot text-2xl text-white mt-2">${rec.kitName}</h3>
+          <p class="text-xs text-gray-400 mt-2">Basado en tus respuestas, este kit calza mejor con tu objetivo actual.</p>
+          ${reasonsHtml}
+          <p class="text-[11px] text-gray-500 mt-4">Nota: recomendaciones orientativas, no sustituyen consejo profesional.</p>
+        `;
+      }
+
+      if (ctaEl) {
+        ctaEl.href = rec.ctaUrl;
+      }
+
+      // si quieres limpiar el state al terminar, descomenta:
+      // clearState();
+    }, 260);
+
+    console.log('Respuestas del survey:', state.answers);
+  }
+
+  nextBtn.addEventListener('click', () => {
+    const lastIndex = questions.length - 1;
+    if (state.current < lastIndex) {
+      state.current += 1;
+      saveState();
+      renderQuestion();
+    } else {
+      finishSurvey();
+    }
+  });
+
+  // init
+  loadState();
+  safePushEvent('survey_start', { step: state.current + 1 });
+  renderQuestion();
+  </script>
+</body>
+</html>

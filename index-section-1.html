@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth antialiased">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="PHL | Sección Ciencia" />
+  <meta name="theme-color" content="#050505" />
+
+  <title>PHL | Ciencia</title>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              bg: '#050505',
+              panel: '#0F0F0F',
+              gold: '#C5A059',
+            }
+          },
+          fontFamily: {
+            didot: ['"Bodoni Moda"', 'serif'],
+            geo: ['"Montserrat"', 'sans-serif'],
+          },
+          animation: {
+            'fade-up': 'fadeInUp 0.85s ease-out forwards',
+            'spin-slow': 'spin 60s linear infinite',
+          },
+          keyframes: {
+            fadeInUp: {
+              '0%': { opacity: '0', transform: 'translateY(18px)' },
+              '100%': { opacity: '1', transform: 'translateY(0)' },
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    :root {
+      --gold-primary: #C5A059;
+    }
+    body { background-color: #050505; color: #e5e7eb; overflow-x: hidden; }
+    .glass-panel { background: rgba(15, 15, 15, 0.6); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.08); }
+  </style>
+</head>
+<body class="font-geo bg-brand-bg">
+  <main>
+    <section id="ciencia" class="pb-32 pt-24 md:pt-32 bg-brand-panel relative overflow-hidden -mt-32">
+      <div class="absolute top-0 right-0 w-[500px] h-[500px] bg-blue-900/5 blur-[120px] rounded-full pointer-events-none"></div>
+
+      <div class="max-w-[1400px] mx-auto px-6 grid grid-cols-1 lg:grid-cols-2 gap-24 items-center relative z-10">
+        <div class="relative order-2 lg:order-1 flex justify-center group">
+          <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[90%] aspect-square border border-brand-gold/5 rounded-full animate-spin-slow"></div>
+          
+          <div class="relative w-[300px] h-[480px] bg-gradient-to-br from-[#1a1a1a] to-black rounded-t-[160px] rounded-b-[40px] border border-white/5 shadow-2xl flex flex-col items-center justify-end pb-12 overflow-hidden transition-transform duration-700 group-hover:-translate-y-2">
+            <div class="absolute inset-0 bg-gradient-to-tr from-white/5 via-transparent to-transparent opacity-40"></div>
+            <div class="relative z-10 glass-panel w-[220px] h-[240px] border border-brand-gold/20 flex flex-col items-center justify-center p-6 text-center shadow-2xl">
+              <span class="font-didot text-3xl text-white mb-2 tracking-wide">NEURO<br />PRIME</span>
+              <div class="w-8 h-[1px] bg-brand-gold mb-4"></div>
+              <span class="text-[0.55rem] tracking-[0.25em] text-gray-400 uppercase">Nootrópico Diario</span>
+              <span class="text-[0.55rem] tracking-[0.15em] text-brand-gold mt-6 border border-brand-gold/30 px-3 py-1 rounded-full">60 CÁPSULAS</span>
+            </div>
+          </div>
+          <div class="absolute bottom-[-50px] w-[240px] h-[30px] bg-black blur-xl opacity-60 transition-all duration-700 group-hover:w-[200px] group-hover:opacity-40"></div>
+        </div>
+
+        <div class="order-1 lg:order-2">
+          <div class="flex items-center gap-3 mb-8">
+            <span class="w-8 h-[1px] bg-brand-gold"></span>
+            <span class="text-[10px] tracking-[0.3em] text-brand-gold uppercase font-medium">The Flagship Formula</span>
+          </div>
+          <h2 class="font-didot text-5xl md:text-6xl text-white mb-8 leading-[1.1]">Ingeniería <br /><span class="italic text-gray-600">Molecular.</span></h2>
+          <p class="text-sm text-gray-400 leading-8 mb-12 max-w-lg">A diferencia de la cafeína sintética que “toma prestada” energía del mañana, nuestra matriz de <strong class="text-white font-normal">L-Teanina y Rhodiola Rosea</strong> optimiza la producción natural de ATP mitocondrial, permitiendo un estado de flujo constante.</p>
+          <ul class="space-y-8">
+            <li class="flex items-start gap-5 group cursor-default">
+              <div class="mt-1.5 w-5 h-5 rounded-full border border-gray-700 flex items-center justify-center group-hover:border-brand-gold transition-colors duration-300">
+                <div class="w-1.5 h-1.5 bg-brand-gold rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+              </div>
+              <div><h3 class="font-didot text-xl text-white group-hover:text-brand-gold transition-colors duration-300">Claridad Mental</h3><p class="text-xs text-gray-500 mt-1.5 tracking-wide">Enfoque sostenido sin el "crash" de la tarde.</p></div>
+            </li>
+            <li class="flex items-start gap-5 group cursor-default">
+              <div class="mt-1.5 w-5 h-5 rounded-full border border-gray-700 flex items-center justify-center group-hover:border-brand-gold transition-colors duration-300">
+                <div class="w-1.5 h-1.5 bg-brand-gold rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+              </div>
+              <div><h3 class="font-didot text-xl text-white group-hover:text-brand-gold transition-colors duration-300">Neuroprotección</h3><p class="text-xs text-gray-500 mt-1.5 tracking-wide">Ingredientes adaptógenos con enfoque a largo plazo.</p></div>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </section>
+  </main>
+</body>
+</html>
