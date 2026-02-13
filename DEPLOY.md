@@ -16,8 +16,11 @@ You must configure the following variables in your Vercel Project Settings > Env
 | `NEXT_PUBLIC_BASE_URL` | The URL of your deployed app | `https://phl.vercel.app` |
 | `SHOPIFY_STORE_DOMAIN` | Your Shopify store URL | `phl-demo.myshopify.com` |
 | `SHOPIFY_STOREFRONT_ACCESS_TOKEN` | Token with `unauthenticated_read_product_listings` scope | `dd4d4...` |
-| `MERCADOPAGO_PUBLIC_KEY` | Public key from MP Dashboard | `TEST-bf34...` |
-| `MERCADOPAGO_ACCESS_TOKEN` | Access token from MP Dashboard | `TEST-7890...` |
+| `MP_ACCESS_TOKEN_TEST` | MercadoPago Test Access Token | `TEST-7890...` |
+| `MP_PUBLIC_KEY_TEST` | MercadoPago Test Public Key | `TEST-bf34...` |
+| `MP_ACCESS_TOKEN_PROD` | MercadoPago Prod Access Token | `APP_USR-7890...` |
+| `MP_PUBLIC_KEY_PROD` | MercadoPago Prod Public Key | `APP_USR-bf34...` |
+| `MP_WEBHOOK_SECRET` | Secret for validating Webhook HMAC | `h4sh...` |
 
 ## 3. Deployment Steps
 1. Push your code to a Git repository (GitHub/GitLab).
